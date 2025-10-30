@@ -27,7 +27,7 @@ class GSDriver implements IPDFDriver
         }
 
         $this->version = $this->str_to_version($this->execute_gs('--version'));
-        $this->enabled = count($this->version) > 0 && $this->version[0] > 9;
+        $this->enabled = count($this->version) > 0 && $this->version[0] > 8;
 
     }
     public function enabled(): bool
@@ -57,6 +57,8 @@ class GSDriver implements IPDFDriver
 
     public function convert(string $filename, string $outPath, string $outFormat = 'jpg', string $outPrefixName = '$name_$i', array $param = [])
     {
+        $DEVICE = isset($param['dpi']) ? ' -r' . $param['dpi'] : '';
+
         $info     = pathinfo($filename);
         $run_path = pathinfo($_SERVER['SCRIPT_FILENAME']);
         $filename = str_replace('\\', '/', $filename);
@@ -69,8 +71,9 @@ class GSDriver implements IPDFDriver
             'png' => 'png16m',
         ];
 
-        $command = '-sDEVICE=' . $devices[$outFormat] . ' -sOutputFile=' . $tmp_pref . "-%d.$outFormat -dBATCH -dNOPAUSE $filename";
-
+        // -dQFactor=1.0 -dJPEG=100 
+        $command = '-sDEVICE=' . $devices[$outFormat] . "$DEVICE -sOutputFile=" . $tmp_pref . "-%d.$outFormat -dBATCH -dNOPAUSE $filename";
+        console::log($command);
         $this->execute_gs($command);
 
         $name = $info['filename'];
@@ -95,12 +98,14 @@ class GSDriver implements IPDFDriver
         } else {
             exec($command, $out);
         }
+        if (gettype($out) === 'array') {
+            return implode(' ', $out);
+        }
         return $out;
     }
-
     private function execute_gs(string $command): string
     {
-        console::log("\n" . $this->gs . ' ' . $command);
+        // console::log("\n" . $this->gs . ' ' . $command);
         $result = $this->execute($this->gs . ' ' . $command);
 
         return empty($result) ? '' : "$result";

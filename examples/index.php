@@ -8,7 +8,7 @@ require_once __DIR__ . '/../src/drivers/IPDFDriver.php';
 require_once __DIR__ . '/../src/drivers/GSDriver.php';
 require_once __DIR__ . '/../src/PDF.php';
 
-$file = 'D:/work/fmihel/report/report/examples/media/doc3.pdf';
+$file = 'D:/work/fmihel/report/report/examples/media/doc4.pdf';
 
 $pdf = new PDF(new GSDriver());
-$pdf->convert($file, __DIR__ . '/tmp', 'png');
+$pdf->convert($file, __DIR__ . '/tmp', 'jpg', '$name_$i', ['dpi' => 150]);
