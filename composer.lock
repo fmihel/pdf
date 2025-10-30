@@ -1,0 +1,59 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "442865b197e0c386b0b6294ec55fab4d",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "fmihel/console-log",
+            "version": "v1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fmihel/console-log.git",
+                "reference": "80ffcf080f4ab0f012673c382a87ffcfce7d0a37"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fmihel/console-log/zipball/80ffcf080f4ab0f012673c382a87ffcfce7d0a37",
+                "reference": "80ffcf080f4ab0f012673c382a87ffcfce7d0a37",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "fmihel\\": "source"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "fmihel",
+                    "email": "fmihel76@gmail.com"
+                }
+            ],
+            "description": "error,log,console,php,javascript,js,error_log,console.log,console.info",
+            "support": {
+                "issues": "https://github.com/fmihel/console-log/issues",
+                "source": "https://github.com/fmihel/console-log/tree/v1.8.1"
+            },
+            "time": "2025-09-23T06:12:29+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}

@@ -1,0 +1,29 @@
+{
+    "name": "fmihel/pdf",
+    "description": "pdf lib",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "fmihel",
+            "email": "fmihel76@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "fmihel/console-log": "*"
+    },    
+    "autoload": {
+        "psr-4": {
+            "fmihel\\pdf\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "fmihel\\pdf\\test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --bootstrap vendor/autoload.php tests",
+        "testdox": "phpunit --testdox tests"
+
+    }}
