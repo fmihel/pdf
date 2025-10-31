@@ -1,7 +1,7 @@
 <?php
 namespace fmihel\pdf\drivers;
 
-use fmihel\console;
+use fmihel\pdf\utils\Dir;
 
 class GSDriver implements IPDFDriver
 {
@@ -27,7 +27,7 @@ class GSDriver implements IPDFDriver
         }
 
         $this->version = $this->str_to_version($this->execute_gs('--version'));
-        $this->enabled = count($this->version) > 0 && $this->version[0] > 8;
+        $this->enabled = count($this->version) && $this->version[0] > 8;
 
     }
     public function enabled(): bool
@@ -73,15 +73,14 @@ class GSDriver implements IPDFDriver
 
         // -dQFactor=1.0 -dJPEG=100 
         $command = '-sDEVICE=' . $devices[$outFormat] . "$DEVICE -sOutputFile=" . $tmp_pref . "-%d.$outFormat -dBATCH -dNOPAUSE $filename";
-        console::log($command);
+
         $this->execute_gs($command);
 
-        $name = $info['filename'];
         for ($i = 0; $i < $count; $i++) {
             $from = str_replace('\\', '/', $run_path['dirname']) . '/' . $tmp_pref . '-' . ($i + 1) . '.' . $outFormat;
 
-            $file = str_replace(['$name', '$i'], [$name, $i + 1], $outPrefixName) . ".$outFormat";
-            $to   = $this->join($outPath, $file);
+            $file = str_replace(['$name', '$i'], [$info['filename'], $i + 1], $outPrefixName) . ".$outFormat";
+            $to   = Dir::join($outPath, $file);
 
             if (copy($from, $to)) {
                 unlink($from);
@@ -120,50 +119,4 @@ class GSDriver implements IPDFDriver
         return $out;
     }
 
-    private function join(...$paths)
-    {
-        $paths = array_map(function ($path) {return str_replace('\\', '/', $path);}, $paths);
-        $out = implode('/', $paths);
-        while (strpos($out, '//') !== false) {
-            $out = str_replace('//', '/', $out);
-        }
-
-        return $out;
-
-    }
-
-    // private function getRelativePath(string $from, string $to): string
-    // {
-    //     // Normalize paths to remove redundant slashes and resolve '..'
-    //     $from = realpath($from);
-    //     $to   = realpath($to);
-
-    //     if ($from === false || $to === false) {
-    //         return $to; // One or both paths are invalid, return the target path as is
-    //     }
-
-    //     $fromParts = explode(DIRECTORY_SEPARATOR, $from);
-    //     $toParts   = explode(DIRECTORY_SEPARATOR, $to);
-
-    //     // Find the common base path
-    //     $commonParts = 0;
-    //     while (isset($fromParts[$commonParts]) && isset($toParts[$commonParts]) && $fromParts[$commonParts] === $toParts[$commonParts]) {
-    //         $commonParts++;
-    //     }
-
-    //     // Add '..' for each directory to go up from the 'from' path
-    //     $relativePath = str_repeat('..' . DIRECTORY_SEPARATOR, count($fromParts) - $commonParts);
-
-    //     // Add the remaining parts of the 'to' path
-    //     for ($i = $commonParts; $i < count($toParts); $i++) {
-    //         $relativePath .= $toParts[$i] . DIRECTORY_SEPARATOR;
-    //     }
-
-    //     // Remove trailing slash if not pointing to a directory
-    //     if ($relativePath !== '' && substr($relativePath, -1) === DIRECTORY_SEPARATOR && ! is_dir($to)) {
-    //         $relativePath = substr($relativePath, 0, -1);
-    //     }
-
-    //     return $relativePath;
-    // }
 }

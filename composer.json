@@ -1,6 +1,6 @@
 {
     "name": "fmihel/pdf",
-    "description": "pdf lib",
+    "description": "pdf,convert,jpg,ghostscript,Imagick",
     "type": "library",
     "license": "MIT",
     "authors": [
