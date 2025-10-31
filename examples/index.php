@@ -10,6 +10,9 @@ require_once __DIR__ . '/../src/PDF.php';
 
 $file = __DIR__ . '/media/doc1.pdf';
 
-$pdf = new PDF(new GSDriver());
+$driver = new GSDriver();
+$pdf    = new PDF($driver);
 // $pdf = new PDF(new ImagickDriver());
-$pdf->convert($file, __DIR__ . '/tmp', 'jpg', '$name_$i', ['dpi' => 150]);
+// $pdf->convert($file, __DIR__ . '/tmp', 'pdf', '$name_$i', ['dpi' => 150]);
+
+echo $driver->extract($file, 2);

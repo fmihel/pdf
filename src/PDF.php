@@ -29,4 +29,12 @@ class PDF
         return [];
     }
 
+    public function extract(string $filename, $pageNum, string $outFileName = ''): string
+    {
+        if ($this->driver->enabled()) {
+            return $this->driver->extract($filename, $pageNum, $outFileName);
+        }
+        return '';
+    }
+
 }

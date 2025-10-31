@@ -6,4 +6,5 @@ interface IPDFDriver
     public function enabled(): bool;
     public function countPage(string $filename);
     public function convert(string $filename, string $outPath, string $outFormat = 'jpg', string $outPrefixName = '$name_$i', array $param = []): array;
+    public function extract(string $filename, $pageNum, string $outFileName = ''): string;
 }

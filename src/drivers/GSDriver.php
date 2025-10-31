@@ -1,6 +1,7 @@
 <?php
 namespace fmihel\pdf\drivers;
 
+use fmihel\console;
 use fmihel\pdf\utils\Dir;
 
 class GSDriver implements IPDFDriver
@@ -70,6 +71,7 @@ class GSDriver implements IPDFDriver
         $devices = [
             'jpg' => 'jpeg',
             'png' => 'png16m',
+            'pdf' => 'pdf',
         ];
 
         // -dQFactor=1.0 -dJPEG=100 
@@ -92,9 +94,19 @@ class GSDriver implements IPDFDriver
 
         return $out;
     }
-
+    public function extract(string $filename, $pageNum, string $outFileName = ''): string
+    {
+        if (empty($outFileName)) {
+            $run_path    = pathinfo($_SERVER['SCRIPT_FILENAME']);
+            $name        = pathinfo($filename)['filename'];
+            $outFileName = Dir::join($run_path['dirname'], $name . '_' . $pageNum . '.pdf');
+        }
+        $this->execute_gs('-dNOPAUSE -dQUIET -dBATCH -sOutputFile="' . $outFileName . '" -dFirstPage=' . $pageNum . ' -dLastPage=' . $pageNum . ' -sDEVICE=pdfwrite "' . $filename . '"');
+        return $outFileName;
+    }
     private function execute($command)
     {
+        console::log($command);
         $out = null;
         if ($this->is_win) {
             $out = shell_exec($command);

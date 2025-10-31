@@ -94,4 +94,8 @@ class ImagickDriver implements IPDFDriver
         }
         return $out;
     }
+    public function extract(string $filename, $pageNum, string $outFileName = ''): string
+    {
+        throw new \Exception(__METHOD__ . 'не реализован ');
+    }
 }

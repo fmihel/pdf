@@ -1,4 +1,4 @@
-# pdf v0.1.0
+# pdf v0.2.0
 
 short pdf utilities
 
@@ -51,3 +51,6 @@ Api (PDF class)
 ||$format - format out graph file ( commonly  'jpg')||
 ||$outFileFormat - template out filename , ex: 'new-$name-$i'||
 ||$param - addition driver format (see driver) ||
+|extract($filename,$numPage,$outFileName):string|$filename - pdf file name|extract pdf page from multi pages pdf doc, return path to extracted file|
+||$numPage -page number (first page is 1)||
+||$outFileName - name of result file||
