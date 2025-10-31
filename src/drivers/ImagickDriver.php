@@ -1,7 +1,6 @@
 <?php
 namespace fmihel\pdf\drivers;
 
-use fmihel\console;
 use fmihel\pdf\utils\Dir;
 
 class ImagickDriver implements IPDFDriver
@@ -30,7 +29,7 @@ class ImagickDriver implements IPDFDriver
                 return $out;
 
             } catch (\Exception $e) {
-                console::error($e);
+                error_log($e->getMessage());
             }
         }
         return 0;
@@ -82,7 +81,7 @@ class ImagickDriver implements IPDFDriver
 
             } catch (\Exception $e) {
 
-                console::error($e);
+                error_log($e->getMessage());
 
             } finally {
 

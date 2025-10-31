@@ -104,7 +104,6 @@ class GSDriver implements IPDFDriver
     }
     private function execute_gs(string $command): string
     {
-        // console::log("\n" . $this->gs . ' ' . $command);
         $result = $this->execute($this->gs . ' ' . $command);
 
         return empty($result) ? '' : "$result";
