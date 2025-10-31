@@ -55,8 +55,9 @@ class GSDriver implements IPDFDriver
         return 0;
     }
 
-    public function convert(string $filename, string $outPath, string $outFormat = 'jpg', string $outPrefixName = '$name_$i', array $param = [])
+    public function convert(string $filename, string $outPath, string $outFormat = 'jpg', string $outPrefixName = '$name_$i', array $param = []): array
     {
+        $out    = [];
         $DEVICE = isset($param['dpi']) ? ' -r' . $param['dpi'] : '';
 
         $info     = pathinfo($filename);
@@ -85,8 +86,11 @@ class GSDriver implements IPDFDriver
             if (copy($from, $to)) {
                 unlink($from);
             }
+
+            $out[] = $to;
         }
 
+        return $out;
     }
 
     private function execute($command)

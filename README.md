@@ -1,4 +1,4 @@
-# pdf v0.0.4
+# pdf v0.1.0
 
 short pdf utilities
 
@@ -46,11 +46,8 @@ Api (PDF class)
 |func|params|notes|
 |---|---|---|
 |countPage($filename)|$filename - pdf file name|return count page in pdf file|
-|conver($filename,$to_path,$format,$outFileFormat,$param)|$filename - pdf file name|convert pdf file to graph file format|
+|conver($filename,$to_path,$format,$outFileFormat,$param):array|$filename - pdf file name|convert pdf file to  graph file format, return list of created files|
 ||$to_path - dir to save result (must exists!!)||
 ||$format - format out graph file ( commonly  'jpg')||
 ||$outFileFormat - template out filename , ex: 'new-$name-$i'||
 ||$param - addition driver format (see driver) ||
-
-
-

@@ -35,8 +35,9 @@ class ImagickDriver implements IPDFDriver
         return 0;
     }
 
-    public function convert(string $filename, string $outPath, string $outFormat = 'jpg', string $outPrefixName = '$name_$i', array $param = [])
+    public function convert(string $filename, string $outPath, string $outFormat = 'jpg', string $outPrefixName = '$name_$i', array $param = []): array
     {
+        $out = [];
         if ($this->enabled()) {
 
             $info     = pathinfo($filename);
@@ -77,6 +78,8 @@ class ImagickDriver implements IPDFDriver
                     if (copy($from, $to)) {
                         unlink($from);
                     }
+
+                    $out[] = $to;
                 }
 
             } catch (\Exception $e) {
@@ -89,5 +92,6 @@ class ImagickDriver implements IPDFDriver
             }
 
         }
+        return $out;
     }
 }

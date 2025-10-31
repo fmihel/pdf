@@ -5,7 +5,9 @@ use fmihel\pdf\drivers\IPDFDriver;
 
 class PDF
 {
+
     private $driver;
+
     function __construct(IPDFDriver $driver)
     {
         $this->driver = $driver;
@@ -19,11 +21,12 @@ class PDF
         return 0;
     }
 
-    function convert(string $pdf_filename, string $to_path, string $format = 'jpg', string $out_name_format = '$name_$i', array $param = [])
+    function convert(string $pdf_filename, string $to_path, string $format = 'jpg', string $out_name_format = '$name_$i', array $param = []): array
     {
         if ($this->driver->enabled()) {
-            $this->driver->convert($pdf_filename, $to_path, $format, $out_name_format, $param);
+            return $this->driver->convert($pdf_filename, $to_path, $format, $out_name_format, $param);
         }
+        return [];
     }
 
 }
