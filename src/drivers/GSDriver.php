@@ -104,6 +104,7 @@ class GSDriver implements IPDFDriver
         $this->execute_gs('-dNOPAUSE -dQUIET -dBATCH -sOutputFile="' . $outFileName . '" -dFirstPage=' . $pageNum . ' -dLastPage=' . $pageNum . ' -sDEVICE=pdfwrite "' . $filename . '"');
         return $outFileName;
     }
+
     private function execute($command)
     {
         console::log($command);
@@ -118,6 +119,7 @@ class GSDriver implements IPDFDriver
         }
         return $out;
     }
+
     private function execute_gs(string $command): string
     {
         $result = $this->execute($this->gs . ' ' . $command);
