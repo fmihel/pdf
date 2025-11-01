@@ -1,4 +1,4 @@
-# pdf v0.2.0
+# pdf v0.3.0
 
 short pdf utilities
 
@@ -7,7 +7,7 @@ install
 $ composer require fmihel/pdf
 ```
 
-example use ghostscript ```requier``` install ghostscript (see: https://www.ghostscript.com)
+example use ghostscript ```require``` install ghostscript (see: https://www.ghostscript.com)
 
 ```php
 <?php
@@ -23,7 +23,8 @@ $pdf = new PDF(new GSDriver());
 $pdf->convert($file, __DIR__ . '/tmp', 'jpg', '$name_$i', ['dpi' => 150]);
 
 ```
-example use Imagick
+
+example use Imagick ```!! not fully implemented !!```
 
 ```php
 <?php
@@ -41,16 +42,35 @@ $pdf->convert($file, __DIR__ . '/tmp', 'jpg', '$name_$i', ['dpi' => 150]);
 ```
 
 
-Api (PDF class)
+## PDF class methods
 
-|func|params|notes|
-|---|---|---|
-|countPage($filename)|$filename - pdf file name|return count page in pdf file|
-|conver($filename,$to_path,$format,$outFileFormat,$param):array|$filename - pdf file name|convert pdf file to  graph file format, return list of created files|
-||$to_path - dir to save result (must exists!!)||
-||$format - format out graph file ( commonly  'jpg')||
-||$outFileFormat - template out filename , ex: 'new-$name-$i'||
-||$param - addition driver format (see driver) ||
-|extract($filename,$numPage,$outFileName):string|$filename - pdf file name|extract pdf page from multi pages pdf doc, return path to extracted file|
-||$numPage -page number (first page is 1)||
-||$outFileName - name of result file||
+``countPage($filename)`` - return count page in pdf file
+
+|param|notes|
+|---|---|
+|$filename| pdf file name|
+
+---
+``conver($filename,$to_path,$format,$outFileFormat,$param):array`` - convert pdf file to  graph file format, return list of created files
+
+|param|notes|
+|---|---|
+|$filename |pdf file name|
+|$to_path |dir to save result (must exists!!)|
+|$format |format out graph file ( commonly  'jpg')|
+|$outFileFormat | template out filename , ex: 'new-$name-$i'|
+|$param | addition driver format (see driver) |
+
+---
+``extract($filename,$numPage,$outFileName):string`` - extract pdf page from multi pages pdf doc, return list paths to extracted files
+
+|param|notes|
+|---|---|
+|$filename|pdf file name|
+|$numPage |page number (first page is 1)|
+|$outFileName | name of result file|
+---
+``info($filename):array `` - return list of info for pdf pages (orientation and width & height)
+|param|notes|
+|---|---|
+|$filename | pdf file name|

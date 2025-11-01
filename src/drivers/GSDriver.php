@@ -1,7 +1,6 @@
 <?php
 namespace fmihel\pdf\drivers;
 
-use fmihel\console;
 use fmihel\pdf\utils\Dir;
 
 class GSDriver implements IPDFDriver
@@ -104,10 +103,66 @@ class GSDriver implements IPDFDriver
         $this->execute_gs('-dNOPAUSE -dQUIET -dBATCH -sOutputFile="' . $outFileName . '" -dFirstPage=' . $pageNum . ' -dLastPage=' . $pageNum . ' -sDEVICE=pdfwrite "' . $filename . '"');
         return $outFileName;
     }
+    public function info(string $filename): array
+    {
+        $out = [
 
+        ];
+        if ($this->version[0] == 9 && $this->version[1] < 5) {
+            // < 9.5
+            $script = '-dQUIET -sFileName="' . $filename . '" -c "FileName (r) file runpdfbegin 1 1 pdfpagecount {pdfgetpage /MediaBox get {=print ( ) print} forall (\n) print} for quit"';
+            $result = $this->execute_gs($script);
+            $result = explode("\n", $result);
+            $out    = array_map(function ($it) {
+                $area        = explode(" ", $it);
+                $orientation = self::PORTRAIT;
+                $width       = 0;
+                $height      = 0;
+                if (count($area) > 3) {
+                    $orientation = $area[3] > $area[2] ? self::PORTRAIT : self::LANDSCAPE;
+                    $width       = $area[2];
+                    $height      = $area[3];
+                }
+                return [
+                    'orientation' => $orientation,
+                    'width'       => $width,
+                    'height'      => $height,
+                ];
+            }, $result);
+
+        } else {
+            // >= 9.5 (use -dPDFINFO)
+            $script = '-dBATCH -dNOPAUSE -dQUIET -dPDFINFO "' . $filename . '"';
+            $result = $this->execute_gs($script);
+
+            $re      = '/Page\s*(\d+)\s*MediaBox:\s*\[(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+\.?\d*)\s*\]*/m';
+            $matches = [];
+            preg_match_all($re, $result, $matches, PREG_SET_ORDER, 0);
+
+            $out = array_map(function ($data) {
+                $orientation = self::PORTRAIT;
+                $width       = 0;
+                $height      = 0;
+                if (count($data) > 5) {
+                    $orientation = $data[4] < $data[5] ? self::PORTRAIT : self::LANDSCAPE;
+                    $width       = $data[4];
+                    $height      = $data[5];
+
+                }
+                return [
+                    'orientation' => $orientation,
+                    'width'       => $width,
+                    'height'      => $height,
+
+                ]
+                ;
+            }, $matches);
+
+        }
+        return $out;
+    }
     private function execute($command)
     {
-        console::log($command);
         $out = null;
         if ($this->is_win) {
             $out = shell_exec($command);
@@ -115,7 +170,7 @@ class GSDriver implements IPDFDriver
             exec($command, $out);
         }
         if (gettype($out) === 'array') {
-            return implode(' ', $out);
+            return implode("\n", $out);
         }
         return $out;
     }

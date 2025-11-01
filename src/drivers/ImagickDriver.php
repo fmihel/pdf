@@ -98,4 +98,9 @@ class ImagickDriver implements IPDFDriver
     {
         throw new \Exception(__METHOD__ . 'не реализован ');
     }
+    public function info(string $filename): array
+    {
+        throw new \Exception(__METHOD__ . 'не реализован ');
+    }
+
 }

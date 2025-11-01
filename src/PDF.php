@@ -37,4 +37,13 @@ class PDF
         return '';
     }
 
+    public function info(string $filename): array
+    {
+        if ($this->driver->enabled()) {
+            return $this->driver->info($filename);
+        }
+        return [];
+
+    }
+
 }
